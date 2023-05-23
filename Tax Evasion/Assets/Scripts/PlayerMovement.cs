@@ -58,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
             // Calculate the target rotation based on the movement direction and the orientation
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
 
+            targetRotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
             // Smoothly rotate the player towards the target rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
