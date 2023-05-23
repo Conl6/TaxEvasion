@@ -4,26 +4,42 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
-    public float mouseSensitivity;
+    private const float yAngleMin = 0.0f;
+    private const float yAngleMax = 35.0f;
 
-    public Transform camHolder;
-    public Transform Orientation;
+    public Transform lookAt;
+    public Transform camTransform;
 
-    float yRotation;
+    private Camera cam;
 
-        private void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+    private float distance = 4.0f;
+    private float currentX = 0.0f;
+    private float currentY = 0.0f;
+    private float sensX = 4.0f;
+    private float sensY = 1.0f;
 
-        private void Update()
-        {      
-            float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * mouseSensitivity;
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
-            yRotation += mouseY;
+        camTransform = transform;
+        cam = Camera.main;
+    }
 
-            camHolder.rotation = Quaternion.Euler(0, yRotation, 0);
-        }
+    private void Update()
+    {
+        currentX += Input.GetAxis("Mouse X");
+        currentY += Input.GetAxis("Mouse Y");
+
+        currentY = Mathf.Clamp(currentY, yAngleMin, yAngleMax);
+    }
+    private void LateUpdate()
+    {
+        Vector3 dir = new Vector3(0,0,-distance);
+        Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+        camTransform.position = lookAt.position + rotation * dir;
+        camTransform.LookAt(lookAt.position);
+    }
 }
 
