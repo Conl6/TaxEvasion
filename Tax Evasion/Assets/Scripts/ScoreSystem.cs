@@ -9,9 +9,10 @@ public class ScoreSystem : MonoBehaviour
     private float totalScore;
     private float score;
     private float points; //points are to be allocated for other tasks such as killing enemy or what ever
+    public float pointsPer;
     [Header("Timer")]
     private float timer;
-    public float pointsPer;
+    public float timePer;
     [Header("Text")]
     public TextMeshProUGUI scoreCountText;
 
@@ -21,10 +22,10 @@ public class ScoreSystem : MonoBehaviour
         totalScore = score + points;
         timer += Time.deltaTime;
 
-        if (timer > pointsPer)
+        if (timer > timePer)
         {
 
-            score += 5;
+            score += pointsPer;
             timer = 0;
         }
     }
